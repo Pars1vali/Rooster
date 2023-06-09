@@ -1,0 +1,177 @@
+
+<style>
+    html,
+    body,
+    #container {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position:relative;
+    }
+
+    #pointer {
+        top: 45%;
+        left: 45%;
+        position: absolute;
+    }
+</style>
+
+<body>
+    <div id="container"></div>
+    <div id="pointer"></div>
+
+    <script src="https://mapgl.2gis.com/api/js/v1"></script>
+    <script type="text/javascript">
+        let htmlMarker;
+        let circle;
+        let circleRadius;
+        let cordinates_pointer;
+        let marker;
+        const map = new mapgl.Map('container', {
+            center: [55.31878, 25.23584],
+            zoom: 13,
+            key: '7f879875-118a-4d1e-87ab-b41d7e857829',
+            style: 'c080bb6a-8134-4993-93a1-5b4d8c36a59b'
+        });
+
+        /*показ метки предпросмотра куда установить метку на карту*/
+        function splach_pointer() {
+            if (circleRadius) {
+                circleRadius.destroy();
+            }
+            if (htmlMarker) {
+                htmlMarker.destroy();
+            }
+            let div = document.getElementById('pointer');
+            
+            div.innerHTML = '<img src="https://svgshare.com/i/ttk.svg" alt="pointer" width=90%"/>';
+        }
+
+        /*показ радиуса предпросмотра в каком радиусе прозвнеит будильник*/
+        function splach_circleRadius(radius) {
+            if (circleRadius) {
+                circleRadius.destroy();
+            }
+            circleRadius = new mapgl.Circle(map, {
+                coordinates: cordinates_pointer,
+                radius: radius,
+                color: '#ff000055',
+                strokeWidth: 2,
+                strokeColor: '#ffffff',
+            });
+
+            map.setCenter(htmlMarker);
+            map.setZoom(14);
+        }
+
+        /*скрытие метки предпросмотра - куда установить метку на карту*/
+        function hide_splach() {
+            let div = document.getElementById('pointer');
+            div.innerHTML = '';
+        }
+
+        /*установка метки в радуисе которой должен прозвенеть будильник на карту*/
+        function set_pointer() {           
+
+            let div = document.getElementById('pointer');
+            div.innerHTML = '';
+
+            if (htmlMarker) {
+                htmlMarker.destroy();
+            }
+            htmlMarker = new mapgl.HtmlMarker(map, {
+                coordinates: map.getCenter(),
+                html: '<img src="https://svgshare.com/i/ttw.svg" alt="pointer" width="80%"/>',
+            });
+            cordinates_pointer = htmlMarker.getCoordinates();
+            return htmlMarker.getCoordinates();
+        }
+
+        /*установка радиуса котором должен прозвенеть будильник*/
+        function set_circleRadius(radius) {
+
+            if (circleRadius) {
+                circleRadius.destroy();
+            }
+            circleRadius = new mapgl.Circle(map, {
+                coordinates: cordinates_pointer,
+                radius: radius,
+                color: '#ff000055',
+                strokeWidth: 2,
+                strokeColor: '#ffffff',
+            });
+
+        }
+
+        /*отображение гео-позиции пользователя на карте*/
+        function locat(latitude, longitude, isSetCenter) {
+            latitude = latitude / 1000000000000;
+            longitude = longitude / 1000000000000;
+            const center = [longitude, latitude];
+
+
+            if (circle) {
+                circle.destroy();
+            }
+
+            circle = new mapgl.CircleMarker(map, {
+                coordinates: center,
+                radius: 14,
+                color: '#c92020',
+                strokeWidth: 4,
+                strokeColor: '#ffffff',
+                stroke2Width: 6,
+                stroke2Color: '#c920207c',
+            });
+            
+            if (isSetCenter) {
+                map.setCenter(center);
+                map.setZoom(17);
+            }            
+        }
+
+        /*очистка карты от метки и радуиса ее, где должен прозвенеть будильник */
+        function cancel() {
+            if (htmlMarker) {
+                htmlMarker.destroy();
+            }
+            if (circleRadius) {
+                circleRadius.destroy();
+            }
+            if (marker) {
+                marker.destroy();
+            }
+        }
+
+        /*рисование метки остановки*/
+        function draw_marker(lat, longt) {
+            if (marker) {
+                marker.destroy();
+            }
+            lat = lat / 1000000000000;
+            longt = longt / 1000000000000;
+            marker = new mapgl.Marker(map, {
+                coordinates: [longt, lat],
+            });
+        }
+
+        /*ставим метку на остановку, где прозвенит будильник*/
+        function set_poinetStop(lat, longt) {
+            lat = lat / 1000000000000;
+            longt = longt / 1000000000000;
+
+            let div = document.getElementById('pointer');
+            div.innerHTML = '';
+
+            if (htmlMarker) {
+                htmlMarker.destroy();
+            }
+            htmlMarker = new mapgl.HtmlMarker(map, {
+                coordinates: [longt, lat],
+                html: '<img src="https://svgshare.com/i/ttw.svg" alt="pointer" width="80%"/>',
+            });
+        }
+
+    </script>
+</body>

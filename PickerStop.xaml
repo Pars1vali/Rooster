@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Rooster.PickerStop"
+             VerticalOptions="End"
+             CanBeDismissedByTappingOutsideOfPopup="False">
+    <Grid
+        BackgroundColor="White"
+        WidthRequest="400"
+        HeightRequest="300">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <Frame
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Grid.Row="0"
+            BackgroundColor="NavajoWhite"
+            CornerRadius="0"
+            HeightRequest="120"
+            BorderColor="NavajoWhite"/>
+        <Image
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="0,30,45,0"
+            WidthRequest="140"
+            HeightRequest="140"
+            Source="iconpopup.png"/>
+
+        <Frame
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            CornerRadius="40"
+            BorderColor="Gray"
+            BackgroundColor="white"
+            HeightRequest="60"
+            WidthRequest="320"
+            Margin="10,0,40,5">
+            
+            <Picker x:Name="picker"
+                HeightRequest="40"
+                Margin="0,5,0,0"
+                
+                />
+        </Frame>
+        
+
+        <ImageButton
+            IsVisible="true"
+            Source="check_mark.svg"
+            Grid.Row="3"
+            Grid.Column="1"
+            WidthRequest="50"
+            HeightRequest="50"
+            Margin="0,0,15,0"
+            Clicked="closePickerPopup"/>
+
+    </Grid>
+
+
+
+    
+</toolkit:Popup>

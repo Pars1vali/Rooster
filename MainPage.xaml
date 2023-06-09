@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Rooster.MainPage">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!--Webview = "map", отображающее файл index.html, тот в свою очередь показывают карту на экране-->
+        <WebView
+            x:Name="map"
+            Source="index.html"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"/>
+
+        <!--Это кнопка - "cancel" появляется после выбора метки и радиуса, где должен прозвенеть будильник и пр ее нажатии будельник отменяется -
+         - убирается метка и радиус, будильник не прозвенит-->
+        <ImageButton
+            x:Name="cancel"
+            Source="cancel.png"
+            Grid.Row="0"
+            Grid.Column="0"
+            WidthRequest="60"
+            Margin="0,0,30,280"
+            IsVisible="false"
+            Clicked="cancelBtn"/>
+
+        <!--Это фрейм - "geo", выполняющий роль кнопки по нажатию на которую определяется гео-положение пользователя и отображается на карте-->
+        <Frame
+            x:Name="geo"
+            Grid.Row="1"
+            Grid.Column="2"
+            HeightRequest="60"
+            WidthRequest="60"
+            CornerRadius="100"
+            HorizontalOptions="End"
+            Margin="0,240,15,0"
+            BackgroundColor="White"
+            BorderColor="Gray">
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer
+                        Tapped="GeoLocationTap"/>
+            </Frame.GestureRecognizers>
+
+            <Image Source="geo_icon.jpg"
+                   WidthRequest="30"
+                   HeightRequest="30"
+                   >
+
+            </Image>
+        </Frame>
+
+        <!--Это кнопка - "splach_pointerBtn" предпросмотра метки, при ее нажатии в центре экрана появится метка, и перемещаясь по карте пользователь выбиарет место,
+        так же после нажатия появляется кнока - set_pointerBtn, при нажатии на котрый в месте где наведенна метка появится метка, но уже на самой карте,
+        а метка предпросмотреа пропадет, как и кнопка set_pointerBtn-->
+        <ImageButton
+            x:Name="splach_pointerBtn"
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="0,240,25,0"
+            Source="rooster.png"
+            WidthRequest="60"
+            HeightRequest="60"
+            HorizontalOptions="Center"
+            BackgroundColor="White"
+            CornerRadius="28"
+            Clicked="splach_pointer"
+            BorderColor="Gray"
+            BorderWidth="1"/>
+
+        <!--Фрейм - "stopAlarmBtn", выполняющий роль кнопки, при нажатии начинается выполнятся цикл дейсвтий для будильник по остановке-->
+        <Frame
+            x:Name="stopAlarmBtn"
+            Grid.Row="1"
+            Grid.Column="0"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="100"
+            BorderColor="White"
+            Margin="0,90,20,0"
+            >
+            <Image
+                WidthRequest="80"
+                HeightRequest="80"
+                Source="icon_tram.jpg"/>
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="setStopAlarm"/>
+            </Frame.GestureRecognizers>
+        </Frame>
+
+        <!--Кнока - "set_pointerBtn", нажатие на которую утверждает, что "метку установить в этом месте"-->
+        <ImageButton
+            x:Name="set_pointerBtn"
+            IsVisible="false"
+            Source="check_mark.svg"
+            Grid.Row="1"
+            Grid.Column="1"
+            WidthRequest="50"
+            HeightRequest="50"
+            Margin="0,250,0,0"
+            Clicked="set_pointer"/>
+
+    </Grid>
+    
+</ContentPage>

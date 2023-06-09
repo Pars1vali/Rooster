@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="Rooster.AlarmPopup"
+    CanBeDismissedByTappingOutsideOfPopup="False">
+    <Grid
+        BackgroundColor="White"
+        WidthRequest="400"
+        HeightRequest="300">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <!--прямоугольник цвета - NavajoWhite-->
+        <Frame
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Grid.Row="0"
+            BackgroundColor="NavajoWhite"
+            CornerRadius="0"
+            HeightRequest="120"
+            BorderColor="NavajoWhite"/>
+        
+        <!--картинка rooster с иконкой приложения-->
+        <Image
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="0,30,45,0"
+            WidthRequest="140"
+            HeightRequest="140"
+            Source="iconpopup.png"/>
+        
+        <!--метка - "Ку-ка-ре-ку!"-->
+        <Label
+            Text="Ку-ка-ре-ку!"
+            TextColor="#771C0B"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="0,35,50,0"
+            FontSize="32"
+            HorizontalTextAlignment="Center"
+            FontFamily="MontserratMedium"/>
+        
+        <!--метка - "скоро приедем"-->
+        <Label
+            Text="Скоро приедем!"
+            TextColor="#B0290F"
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="0,37,50,0"
+            FontSize="24"
+            HorizontalTextAlignment="Center"
+            FontFamily="MontserratMedium"/>
+        
+        <!--кнопка при нажати на котрую скрывается popup и выключается будильник-->
+        <ImageButton
+            IsVisible="true"
+            Source="check_mark.svg"
+            Grid.Row="3"
+            Grid.Column="1"
+            WidthRequest="50"
+            HeightRequest="50"
+            Margin="0,0,38,0"
+            Clicked="turnOffAlarm"
+            />
+
+    </Grid>
+</toolkit:Popup>
+    
+    
