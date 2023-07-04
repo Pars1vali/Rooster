@@ -209,6 +209,7 @@ public partial class MainPage : ContentPage
         isCancel = true; // прекратить будильник
         cancel.IsVisible = false; // сделать кнопку cancek не видимой
         await map.EvaluateJavaScriptAsync($"cancel()"); // вызов js метода убирающего метку и радиус с карты
+        await map.EvaluateJavaScriptAsync("clear_route()");
 
     }
 
@@ -216,29 +217,32 @@ public partial class MainPage : ContentPage
     private async void setStopAlarm(object sender, EventArgs e)
     {
         tram_4 = new PublicTranssport("4"); // создания объекта общественного транспорта  трамвая №4
-        PublicTransportStop userStop; // остановка на которой пользователь
-        PublicTransportStop stop_chousing = null;   // остановка выбранная пользователем
-        PublicTransportStop stop_alarm;
+        foreach(PublicTransportStop stop in tram_4.listStop)
+        {
+           await map.EvaluateJavaScriptAsync($"fill_coordinates({stop.cordinates[1] * 1000000000000},{stop.cordinates[0] * 1000000000000})");
+        }
+        await map.EvaluateJavaScriptAsync($"draw_route()");
 
-        bool direction = true; // навпрление в котром двигается пользователь по умолчанию  - сверху вниз списка остановок
+
+        PublicTransportStop userStop, stop_chousing = null, stop_alarm; // остановка на которой пользователь, остановка выбранная пользователем, остановка где прозвенит будильник
+
+        bool direction = true; // направление в котром двигается пользователь по умолчанию  - сверху вниз списка остановок
 
         // показ popup для выбора остановки
         var picker_popup = new PickerStop(tram_4);
         string result_picker_popup = (string)(await this.ShowPopupAsync(picker_popup));
 
         stop_chousing = tram_4.listStop.Where(x => x.NameStop == result_picker_popup).First();
-        
-        double lat = stop_chousing.cordinates[0] * 1000000000000;
-        double longt = stop_chousing.cordinates[1] * 1000000000000;
-        await map.EvaluateJavaScriptAsync($"draw_marker({lat},{longt})"); // вызов js метода для отображения метки остановки
+
+        await map.EvaluateJavaScriptAsync($"draw_marker({stop_chousing.cordinates[0] * 1000000000000},{stop_chousing.cordinates[1] * 1000000000000})"); // вызов js метода для отображения метки остановки
 
         var slider_popup = new CountStop();
         int result_slider_popup = (int)await this.ShowPopupAsync(slider_popup);
 
         await GetCurrentLocation(false); // опредлеяем текущее расположение пользователя не приближая его на карте
         userStop = defineStopUser(); // опредлеяем остановку на которой находится пользователь
-        _logger.LogInformation(""+userStop.NameStop);
-        // определяем направление движение
+
+        /*определяем направление движение*/
         foreach (PublicTransportStop stop in tram_4.listStop)
         {
             if (stop.NameStop == userStop.NameStop)
@@ -257,35 +261,26 @@ public partial class MainPage : ContentPage
         stop_alarm = stop_chousing; // остановка на которой должен прозвенеть будильник
         if (direction)
         {
-            _logger.LogInformation("" + direction);
             for (int i = 0; i < result_slider_popup; i++)
             {
                 PublicTransportStop stop = tram_4.listStop.Find(stop_alarm).Next.Value;
                 stop_alarm = stop;
-                _logger.LogInformation("" + stop_alarm.NameStop + "- stop before");
             }
         }
         else if(!direction)
         {
-            _logger.LogInformation(""+direction);
             for (int i = 0; i < result_slider_popup; i++)
             {
                 PublicTransportStop stop = tram_4.listStop.Find(stop_alarm).Previous.Value;
                 stop_alarm = stop;
-                _logger.LogInformation("" + stop_alarm.NameStop + "- stop after");
             }
 
         }
 
-        lat = stop_alarm.cordinates[0] * 1000000000000;
-        longt = stop_alarm.cordinates[1] * 1000000000000;
-        await map.EvaluateJavaScriptAsync($"set_poinetStop({lat},{longt})");
+        await map.EvaluateJavaScriptAsync($"set_poinetStop({stop_alarm.cordinates[0] * 1000000000000},{stop_alarm.cordinates[1] * 1000000000000})");
 
         cancel.IsVisible = true;
         distanceFromUserToStop(stop_alarm);
-        
-        _logger.LogInformation(userStop.NameStop + " " + stop_chousing.NameStop  + " " + stop_alarm.NameStop);
-
     }
 
     private PublicTransportStop defineStopUser()

@@ -19,7 +19,7 @@ namespace Rooster
                 init_tram4();
             }
         }
-        public void init_tram4()
+        private void init_tram4()
         {
             listStop.AddLast(new PublicTransportStop(new double[] { 45.03899, 39.093872 }, "Улица Тюляева"));
             listStop.AddLast(new PublicTransportStop(new double[] { 45.037880, 39.089990 }, "Уральская"));

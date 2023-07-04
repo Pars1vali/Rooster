@@ -7,7 +7,7 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-        position:relative;
+        position: relative;
     }
 
     #pointer {
@@ -28,6 +28,8 @@
         let circleRadius;
         let cordinates_pointer;
         let marker;
+        let polyline;
+        let line_coord = [];
         const map = new mapgl.Map('container', {
             center: [55.31878, 25.23584],
             zoom: 13,
@@ -44,7 +46,7 @@
                 htmlMarker.destroy();
             }
             let div = document.getElementById('pointer');
-            
+
             div.innerHTML = '<img src="https://svgshare.com/i/ttk.svg" alt="pointer" width=90%"/>';
         }
 
@@ -72,7 +74,7 @@
         }
 
         /*установка метки в радуисе которой должен прозвенеть будильник на карту*/
-        function set_pointer() {           
+        function set_pointer() {
 
             let div = document.getElementById('pointer');
             div.innerHTML = '';
@@ -124,11 +126,11 @@
                 stroke2Width: 6,
                 stroke2Color: '#c920207c',
             });
-            
+
             if (isSetCenter) {
                 map.setCenter(center);
                 map.setZoom(17);
-            }            
+            }
         }
 
         /*очистка карты от метки и радуиса ее, где должен прозвенеть будильник */
@@ -141,6 +143,9 @@
             }
             if (marker) {
                 marker.destroy();
+            }
+            if (polyline) {
+                polyline.destroy();
             }
         }
 
@@ -172,6 +177,25 @@
                 html: '<img src="https://svgshare.com/i/ttw.svg" alt="pointer" width="80%"/>',
             });
         }
+
+        //рисуем на карте маршрут общественного трансопорта
+        function fill_coordinates(long, lat) {
+            line_coord.push([long / 1000000000000, lat / 1000000000000]);
+        }
+
+        //рисуем на карте маршрут общественного трансопорта
+        function draw_route() {
+            if (polyline) {
+                polyline.destroy();
+            }
+
+            polyline = new mapgl.Polyline(map, {
+                coordinates: line_coord,
+                width: 10,
+                color: '#FD8771',
+            });
+        }
+                
 
     </script>
 </body>

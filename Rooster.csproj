@@ -31,6 +31,20 @@
 
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	  <AndroidUseAapt2>True</AndroidUseAapt2>
+	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+	  <Debugger>Xamarin</Debugger>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
+	  <AndroidUseAapt2>True</AndroidUseAapt2>
+	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	  <Debugger>Xamarin</Debugger>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\icon.png" Color="#FFDEAD" />
@@ -76,7 +90,6 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="5.1.0" />
 		<PackageReference Include="MetroLog.Maui" Version="2.1.0" />
-		<PackageReference Include="Microsoft.Graph" Version="5.12.0" />
 		<PackageReference Include="Microsoft.Toolkit" Version="7.1.2" />
 		<PackageReference Include="Plugin.Maui.Audio" Version="1.0.0" />
 	</ItemGroup>
@@ -104,4 +117,7 @@
 			<UserProperties />
 		</VisualStudio>
 	</ProjectExtensions>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Net.ILLink.Tasks" Version="8.0.100-1.22612.2" />
+  </ItemGroup>
 </Project>
